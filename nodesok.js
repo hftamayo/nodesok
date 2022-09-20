@@ -22,4 +22,20 @@ app.post("/users", async(req, res) => {
     }
 });
 
+app.post("/users/login", async(req, res) => {
+    const user = users.find(user => user.email = req.body.email);
+    if(user == null){
+        return res.status(400).send('email ');
+    }
+    try{
+        if(await bcrypt.compare(req.body.password, user.password)){
+            res.send('success');
+        } else {
+            res.send('user or password incorrect');
+        };
+    } catch {
+        res.status(500).send();
+    }
+});
+
 app.listen(3000);
